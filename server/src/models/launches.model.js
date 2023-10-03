@@ -1,7 +1,6 @@
 const launchesDB = require("./launches.mongo");
 const planets = require("./planets.mongo");
-
-const launches = new Map();
+const axios = require("axios");
 
 let DEFAULT_FLIGHT_NUMBER = 100;
 
@@ -16,6 +15,10 @@ const launch = {
   success: true,
 };
 saveLaunch(launch);
+
+async function loadLaunchData() {
+  console.log("loading launch data");
+}
 
 async function existsLaunchWithId(launchId) {
   return await launchesDB.findOne({
@@ -76,11 +79,7 @@ async function abortLaunchById(launchId) {
     }
   );
 
-  return aborted.modifiedCount === 1 && aborted.matchedCount === 1
-  // const aborted = launches.get(launchId);
-  // aborted.upcoming = false;
-  // aborted.success = false;
-  // return aborted;
+  return aborted.modifiedCount === 1 && aborted.matchedCount === 1;
 }
 
 module.exports = {
@@ -88,4 +87,5 @@ module.exports = {
   getAllLaunches,
   scheduleNewLaunch,
   abortLaunchById,
+  loadLaunchData,
 };
