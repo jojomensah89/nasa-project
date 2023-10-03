@@ -3,7 +3,7 @@ const request = require("supertest");
 const app = require("../../app");
 const { mongoConnect, mongoDisconnect } = require("../../services/mongo");
 
-describe("Launches API", () => {
+describe("Planets EndPoint", () => {
   beforeAll(async () => {
     await mongoConnect();
   });
@@ -11,10 +11,10 @@ describe("Launches API", () => {
     await mongoDisconnect();
   });
 
-  describe("Test Get /planets", () => {
+  describe("Test Get /v1/planets", () => {
     test("it should respond with 200 success", async () => {
       const response = await request(app)
-        .get("/planets")
+        .get("/v1/planets")
         .expect("Content-Type", /json/)
         .expect(200);
     });

@@ -3,7 +3,7 @@ const request = require("supertest");
 const app = require("../../app");
 const { mongoConnect, mongoDisconnect } = require("../../services/mongo");
 
-describe("Launches API", () => {
+describe("Launches EndPoint", () => {
   beforeAll(async () => {
     await mongoConnect();
   });
@@ -11,16 +11,16 @@ describe("Launches API", () => {
     await mongoDisconnect();
   });
 
-  describe("Test Get /launches", () => {
+  describe("Test Get /v1/launches", () => {
     test("it should respond with 200 success", async () => {
       const response = await request(app)
-        .get("/launches")
+        .get("/v1/launches")
         .expect("Content-Type", /json/)
         .expect(200);
     });
   });
 
-  describe("Test POST /launches", () => {
+  describe("Test POST /v1/launches", () => {
     const completeLaunchData = {
       mission: "Ghana enterprise",
       rocket: "NCC 1701-D",
@@ -41,7 +41,7 @@ describe("Launches API", () => {
 
     test("it should respond with 201 created", async () => {
       const response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(completeLaunchData)
         .expect("Content-Type", /json/)
         .expect(201);
@@ -53,7 +53,7 @@ describe("Launches API", () => {
     });
     test("it should catch missing required properties", async () => {
       const response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(launchDataWithoutDate)
         .expect("Content-Type", /json/)
         .expect(400);
@@ -64,7 +64,7 @@ describe("Launches API", () => {
     });
     test("it should catch invalid dates", async () => {
       const response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(launchDataWithInvalidDate)
         .expect("Content-Type", /json/)
         .expect(400);
@@ -80,13 +80,13 @@ describe("Launches API", () => {
     const invalidLaunchId = 1010;
     test("it should respond with 200 success", async () => {
       const response = await request(app)
-        .del(`/launches/${validLaunchId}`)
+        .del(`/v1/launches/${validLaunchId}`)
         .expect("Content-Type", /json/)
         .expect(200);
     });
     test("it should respond with 404 ", async () => {
       const response = await request(app)
-        .del(`/launches/${invalidLaunchId}`)
+        .del(`/v1/launches/${invalidLaunchId}`)
         .expect("Content-Type", /json/)
         .expect(404);
 
