@@ -39,7 +39,7 @@ async function saveLaunch(launch) {
   try {
     const planet = await planets.findOne({ keplerName: launch.target });
     if (!planet) {
-      throw new Error("No mathcing planet found");
+      throw new Error("No matching planet found");
     }
     await launchesDB.findOneAndUpdate(
       {
