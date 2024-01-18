@@ -80,7 +80,11 @@ async function getLatestFlightNumber() {
 
 async function saveLaunch(launch) {
   try {
-    await lauchesDatabase.findOneAndUpdate(
+    const planet = await planets.findOne({ keplerName: launch.target });
+    if (!planet) {
+      throw new Error("No matching planet found");
+    }
+    await launchesDB.findOneAndUpdate(
       {
         flightNumber: launch.flightNumber,
       },
